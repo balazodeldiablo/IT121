@@ -6,9 +6,11 @@
     
     If the first character is a consonant, we will need to evaluate the second character in our input, since there will be an extra step in case the second character also is a consonant.
     
-    If the length isn't appropiate the page will send an alert with the message: "That's not a valid input".
+    If the length isn't appropiate the page will send an alert with the message: "Input cannot be translated".
     
+    Andy Davila.
     
+    Jan 15, 2023
 */
 
 let userInput = prompt('Pig Latin: A game of words. Please enter a word.');
@@ -45,5 +47,5 @@ if (userInput.length > 1) {
             }
     }
 } else {
-    alert("That's not a valid input.")
+    alert("Input cannot be translated.")
 }
