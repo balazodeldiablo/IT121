@@ -1,1 +1,16 @@
+{
+  "name": "it121---javascript",
+  "version": "1.0.0",
+  "description": "IT 121 Sample Package - Andy Davila",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "(https://github.com/balazodeldiablo/IT121.git)"
+  },
+  "author": "Andy Davila",
+  "license": "ISC"
+}
 
