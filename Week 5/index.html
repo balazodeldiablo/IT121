@@ -13,91 +13,65 @@
 
 <script>
 
-//First we define an array that will hold the face values of the deck
-
-var stringDeck = [
-  "Ace of spades",
-  "Ace of hearts",
-  "Ace of clubs",
-  "Ace of diamonds",
-  "Two of spades",
-  "Two of hearts",
-  "Two of clubs",
-  "Two of diamonds",  
-  "Three of spades",
-  "Three of hearts",
-  "Three of clubs",
-  "Three of diamonds",
-  "Four of spades",
-  "Four of hearts",
-  "Four of clubs",
-  "Four of diamonds",
-  "Five of spades",
-  "Five of hearts",
-  "Five of clubs",
-  "Five of diamonds",
-  "Six of spades",
-  "Six of hearts",
-  "Six of clubs",
-  "Six of diamonds",
-  "Seven of spades",
-  "Seven of hearts",
-  "Seven of clubs",
-  "Seven of diamonds",
-  "Eight of spades",
-  "Eight of hearts",
-  "Eight of clubs",
-  "Eight of diamonds",
-  "Nine of spades",
-  "Nine of hearts",
-  "Nine of clubs",
-  "Nine of diamonds",
-  "Ten of spades",
-  "Ten of hearts",
-  "Ten of clubs",
-  "Ten of diamonds",
-  "Jack of spades",
-  "Jack of hearts",
-  "Jack of clubs",
-  "Jack of diamonds",
-  "Queen of spades",
-  "Queen of hearts",
-  "Queen of clubs",
-  "Queen of diamonds",
-  "King of spades",
-  "King of hearts",
-  "King of clubs",
-  "King of diamonds",
-];
-
 function Card(value, faceValue) {
     this.value = value;
     this.faceValue = faceValue;
 }
 
-var cardDeck = new Array(52);
+function pickACard() {
 
-function populateDeck() {
+  // Code below creates an card deck array of strings.
+  var stringDeck = [];
+  var cardValues = ["Ace", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Jack", "Queen", "King"];
+  var cardSuits = ["clubs", "hearts", "spades", "diamonds"];
+  var counter = 0;
+
+  for (i = 0; i < 4; ++i) {
+    for (j = 0; j < 13; ++j){
+      stringDeck[counter] = cardValues[j] + " of " + cardSuits[i];
+      counter++;
+    }
+  }
+
+  // This new array will contain the Card objects.
+  var cardDeck = new Array(52); 
+
+  // Code below populates "cardDeck" array with 52 Card objects.
   for (var i = 0; i < 52; ++i) {
     cardDeck[i] = new Card();
     cardDeck[i].faceValue = stringDeck[i];
     cardDeck[i].value = i;
   }
-}
 
-const handShown = () => {
-  return ` - ${cardDeck[Math.floor(Math.random() * 52)].faceValue}<p>
-           - ${cardDeck[Math.floor(Math.random() * 52)].faceValue}<p>
-           - ${cardDeck[Math.floor(Math.random() * 52)].faceValue}<p>                      
-           - ${cardDeck[Math.floor(Math.random() * 52)].faceValue}<p>
-           - ${cardDeck[Math.floor(Math.random() * 52)].faceValue}<p>`
+  // Following code uses the Knuth Shuffle to randomize and use a different set of random numbers in every iteration.
+  var randomNumbers = []
+    for (i = 0; i < 52; ++i) {
+      randomNumbers[i] = i + 1;
+  }
+  
+  let currentIndex = randomNumbers.length,  randomIndex;
+
+  while (currentIndex != 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [randomNumbers[currentIndex], randomNumbers[randomIndex]] = [
+      randomNumbers[randomIndex], randomNumbers[currentIndex]];
+  }
+
+
+
+  // Returns a five card hand of random cards.
+  var cardHand = `Here's your hand: <p>`;
+
+  for (i = 0; i < 5; ++i) {
+    cardHand += (` - ${cardDeck[randomNumbers[i]].faceValue}<p>`);
+  }
+
+  return cardHand;  
 }
 
 const dealMeAHand = () => {
-  populateDeck();
-  $("#message").html(handShown());
-
-  //return false; // prevent page reload
+  $("#message").html(pickACard());
 }
 
 </script>
