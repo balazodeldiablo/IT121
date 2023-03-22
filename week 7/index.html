@@ -1,0 +1,137 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <style>
+        .Gryffindor {
+            background-color: rgb(255, 91, 91);
+        }
+        .Slytherin {
+            background-color: rgb(38, 180, 38);
+        }
+        .Hufflepuff {
+            background-color: yellow;
+        }
+        .Ravenclaw {
+            background-color: rgb(121, 121, 254);
+        }
+    </style>
+
+    <body>
+        <script>
+            // constants
+            const buttons = ["Gryffindor", "Slytherin", "Ravenclaw", "Hufflepuff", "Reset"];
+            const houses = ["Gryffindor", "Slytherin", "Ravenclaw", "Hufflepuff", "None"];
+            // list of characters
+            const characters = [
+            {name:"Albus Dumbledore", role:"staff", house:"Gryffindor",gender:"m",alignment:"good"},    
+            {name:"Nymphadora Tonks", role:"", house:"Hufflepuff",gender:"f",alignment:"good"},    
+            {name:"Ron Weasley", role:"student", house:"Gryffindor",gender:"m",alignment:"good"},    
+            {name:"Ginny Weasley", role:"student", house:"Gryffindor",gender:"f",alignment:"good"},    
+            {name:"Hermione Granger", role:"student", house:"Gryffindor",gender:"f",alignment:"good"},    
+            {name:"Mad-eye Moody", role:"staff", house:"None",gender:"m",alignment:"good"},    
+            {name:"Prof McGonagall", role:"staff", house:"Gryffindor",gender:"f",alignment:"good"},    
+            {name:"Harry Potter", role:"student", house:"Gryffindor",gender:"m",alignment:"good"},    
+            {name:"Draco Malfoy", role:"student", house:"Slytherin",gender:"m",alignment:"evil"},    
+            {name:"Hagrid", role:"staff", house:"Gryffindor",gender:"m",alignment:"good"},    
+            {name:"Luna Lovegood", role:"student", house:"Ravenclaw",gender:"f",alignment:"good"},    
+            {name:"Voldemort", role:"", house:"Slytherin",gender:"m",alignment:"evil"},    
+            {name:"Bellatrix Lestrange", role:"", house:"Slytherin",gender:"f",alignment:"evil"},           
+            {name:"Severus Snape", role:"staff", house:"Slytherin",gender:"m",alignment:"?"}
+            ];
+
+            function toggle (className) {
+                if (className === "Reset") {
+                        window.location.reload();
+                } 
+
+                for (let i = 0; i < houses.length; i++) {
+                  
+                    var rows = document.getElementsByClassName(houses[i]); 
+                    console.log(rows)
+                  
+                    if (className != houses[i]) {
+                        for (let j = 0 ; j < rows.length; j++) {
+                            console.log(rows[j])
+                            rows[j].style.display = "none"; 
+                        }
+                    } else {
+                        for (let k = 0 ; k < rows.length; k++) {
+                            rows[k].style.display = "inherit"; 
+                        }
+                    }
+                }
+            };
+            
+            
+            $(document).ready(function(){
+    
+            function createButtons () {
+                for (i = 0; i < buttons.length; i++) {
+                    var button = document.createElement("BUTTON");
+                    button.innerText = buttons[i];
+                    button.setAttribute('onclick',`toggle('${buttons[i]}')`)
+                    document.body.appendChild(button);
+                }
+            }
+            
+            createButtons();
+    
+            // - add table row for each character. 
+    
+            var myTable = document.getElementById("myTable");
+            
+            function insertRows () {
+                for ( i = 0; i < characters.length; i++) {
+    
+                    var row = myTable.insertRow(i + 1);
+                    row.setAttribute('id', `row${i + 1}`);
+    
+                    var properties = Object.keys(characters[0])
+    
+    
+    
+                    properties.forEach (p => {
+                        var cell = row.insertCell(-1);
+                        var text = document.createTextNode(characters[i][p]);
+                        cell.appendChild(text);
+                        
+                        if (characters[i][p] == "Gryffindor" || 
+                            characters[i][p] == "Slytherin" ||
+                            characters[i][p] == "Hufflepuff" ||
+                            characters[i][p] == "Ravenclaw" ||
+                            characters[i][p] == "None") {
+                            // - set visible rows to alternating background color
+                            row.classList.add(`${characters[i][p]}`)
+                        }
+                    });
+                }
+            }
+            
+            insertRows();
+    
+            // - add click handler to show only rows matching selected 'house'. Enable buttons to call this handler.
+            
+    
+            // - add click handler to reset table 
+        
+    
+            });
+    
+            </script>
+        <table id="myTable" border='1'>
+            <tr>
+                <th>name</th>
+                <th>role</th>
+                <th>house</th>
+                <th>gender</th>
+                <th>alignment</th>
+            </tr>
+        </table>
+        <div id="myButtons"></div>
+
+        
+    </body>
+        
+
+</html>
