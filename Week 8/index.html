@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+    <meta charset = "UTF-8">
+    </head>
+<body>
+    <script>
+
+        function isValidCity(city) {
+            return !(/\d/.test(city) || /^\s+$/.test(city) || /^$/.test(city));
+        } 
+
+        const kelvinToF = (value) => {
+            let fahrenheit = (((Number(value) - 273.15)*9)/5) + 32;
+            return fahrenheit.toFixed(2);
+        }
+
+        const parseDateTime = (dt) => {
+            return new Date(dt * 1000);
+        }
+
+        function buttonClick() {
+            var city = document.getElementById("city").value;
+            // Validate city is not empty and has no numbers
+            if (isValidCity(city)) {
+                executeAPICall(city);
+            } else {
+                // Show error message
+                alert("Invalid City. Please use a valid USA city, it cannot be empty or a numeric value.");
+            }
+            return false;
+        }
+
+        function executeAPICall(city) {
+            const url = `http://api.openweathermap.org/data/2.5/weather?q=${city},us&cnt=5&APPID=887b506d93b6b9e44dcd815c0f7b4a4f`
+            fetch(url, {
+                method: "GET",
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                // // Check if response is succesful
+                switch (data.cod) {
+                    case 200:
+                            
+                        d = {
+                            'date': parseDateTime(data.dt),
+                            'min_temp': kelvinToF(data.main.temp_min),
+                            'max_temp': kelvinToF(data.main.temp_max),
+                            'humidity': data.main.humidity,
+                            'description': data.weather[0].description,
+                            'icon': data.weather[0].icon
+                        }
+
+                        var text = document.getElementById("forecast");
+                        var dateTrimmed = `${d.date}`;
+                        dateTrimmed = dateTrimmed.slice(0, 15);
+
+                        text.innerHTML =    `Date: ${dateTrimmed} <p>
+                                            Minimum temperature: ${d.min_temp} F <p>
+                                            Maximum temperature: ${d.max_temp} F <p>
+                                            Humidity: ${d.humidity}% <p>
+                                            Description: ${d.description}`;
+
+                        var iconurl = "http://openweathermap.org/img/w/" + d.icon + ".png";
+                        var iconDisplayed = document.getElementById("wicon");
+                        iconDisplayed.setAttribute("src", `${iconurl}`);
+
+                        break;
+                    case "404":
+                        // Unknown city print error
+                        alert("City is not valid. City must be within the bounds of the US.");
+
+                        break;
+                    default:
+                        // Print unknown error appeared
+                        alert("Unknown error.");
+
+                        break;
+            }
+            }
+            ).catch((error) => console.log(error));
+        }
+
+
+        
+    </script>
+
+<h1>Weather forecast</h1>
+<h3>Get your forecast today!</h3>
+
+<input type="text" id="city" name="city" placeholder="Enter city here:"><br><br>
+<button type="button" id="submit" onclick="buttonClick()">Submit</button>
+
+<p id="forecast"></p>
+<div id="icon"><img id="wicon" src="" alt=""></div>
+
+</body>
+</html>
